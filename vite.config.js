@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// GitHub Pages 项目站点部署在 /<repo>/ 子路径下，
-// 故生产构建用 '/meow-catch/'，本地开发仍用 '/'。
+// base 说明：
+// - GitHub Pages 项目站点在 /<repo>/ 子路径下 → 生产默认 '/meow-catch/'
+// - 腾讯云 COS 等放在域名根目录 → 部署脚本会设 DEPLOY_BASE='/' 覆盖
+// - 本地开发始终 '/'
 export default defineConfig(({ command }) => ({
-  base: command === 'build' ? '/meow-catch/' : '/',
+  base: process.env.DEPLOY_BASE || (command === 'build' ? '/meow-catch/' : '/'),
   plugins: [vue()],
   server: {
     port: 5180,
