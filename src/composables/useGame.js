@@ -545,6 +545,18 @@ export function useGame() {
     for (const it of items) {
       ctx.save()
       ctx.translate(it.x, it.y)
+
+      // 浅色「小盘子」底盘：让棕褐色食物 emoji 在深色背景上更醒目
+      const r = it.size * 0.62
+      ctx.beginPath()
+      ctx.arc(0, 0, r, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(255,255,255,0.92)'
+      ctx.fill()
+      // 按类型上色的描边圈，顺带区分「能吃 / 有害」
+      ctx.lineWidth = 3
+      ctx.strokeStyle = TYPE_COLORS[it.type] || 'rgba(0,0,0,0.25)'
+      ctx.stroke()
+
       ctx.rotate(Math.sin(it.a) * 0.3)
       ctx.font = `${it.size}px serif`
       ctx.textAlign = 'center'
